@@ -30,7 +30,7 @@ class App extends Component {
   componentDidMount() {
     apiService
       .get()
-      .then(res => this.setState({ data: res.data }))
+      .then(res => this.setState({ data: JSON.stringify(res.data) }))
       .catch(e => console.log("e: ", e));
   }
 
