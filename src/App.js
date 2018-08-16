@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 import axios from "axios";
 
@@ -30,17 +32,39 @@ class App extends Component {
   componentDidMount() {
     apiService
       .get()
-      .then(res => this.setState({ data: JSON.stringify(res.data) }))
+      .then(res =>
+        this.setState({
+          data: res.data.map(item => item.title[0])
+        })
+      )
       .catch(e => console.log("e: ", e));
   }
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
+      <div
+        className="App"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}
+      >
+        <TextField
+          id="name"
+          label="Feed Name"
+          className={"abc"}
+          value={this.state.name}
+          onChange={() => console.log("ads")}
+          margin="normal"
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          className={"classes.button"}
+        >
+          Primary
+        </Button>
         <p className="App-intro">{this.state.data}</p>
       </div>
     );
