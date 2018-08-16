@@ -26,10 +26,10 @@ const apiService = axios.create({
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: "" };
+    this.state = { data: "", searchTerm: "" };
   }
 
-  componentDidMount() {
+  search() {
     apiService
       .get()
       .then(res =>
@@ -38,6 +38,10 @@ class App extends Component {
         })
       )
       .catch(e => console.log("e: ", e));
+  }
+
+  componentDidMount() {
+    this.search();
   }
 
   render() {
@@ -55,13 +59,16 @@ class App extends Component {
           label="Feed Name"
           className={"abc"}
           value={this.state.name}
-          onChange={() => console.log("ads")}
+          onChange={e => this.setState({ searchTerm: e.target.value })}
           margin="normal"
+          defaultValue="@idanhaviv"
+          InputLabelProps={{ required: true }}
         />
         <Button
           variant="contained"
           color="primary"
           className={"classes.button"}
+          onClick={() => console.log("HEYU")}
         >
           Primary
         </Button>
