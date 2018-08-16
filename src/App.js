@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 
 const apiService = axios.create({
-  baseURL: "http://localhost:8080/api"
+  baseURL: "http://localhost:8080/api/"
 });
 
 // apiService
@@ -26,12 +26,13 @@ const apiService = axios.create({
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: "", searchTerm: "" };
+    this.state = { data: "", searchTerm: "@idanhaviv" };
   }
 
-  search() {
+  search(searchTerm) {
+    console.log("searchTerm: ", searchTerm);
     apiService
-      .get()
+      .get(searchTerm)
       .then(res =>
         this.setState({
           data: res.data.map(item => item.title[0])
@@ -41,7 +42,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.search();
+    // this.search("@idanhaviv");
   }
 
   render() {
@@ -68,7 +69,7 @@ class App extends Component {
           variant="contained"
           color="primary"
           className={"classes.button"}
-          onClick={() => console.log("HEYU")}
+          onClick={() => this.search(this.state.searchTerm)}
         >
           Primary
         </Button>
