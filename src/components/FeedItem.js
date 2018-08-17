@@ -20,7 +20,9 @@ const styles = theme => ({
   },
   media: {
     height: 0,
-    paddingTop: "56.25%" // 16:9
+    paddingTop: "56.25%", // 16:9
+    marginRight: 5,
+    marginLeft: 5
   },
   actions: {
     display: "flex"
@@ -29,6 +31,7 @@ const styles = theme => ({
     backgroundColor: red[500]
   }
 });
+
 const RecipeReviewCard = ({ classes, avatarSrc, title, image, content }) => (
   <div>
     <Card className={classes.card}>
