@@ -51,6 +51,13 @@
     recompose "^0.28.0"
     warning "^4.0.1"
 
+"@material-ui/icons@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-2.0.2.tgz#0150c38cda089ef284e9b4a730dfe6e88a0b5de6"
+  dependencies:
+    "@babel/runtime" "7.0.0-beta.42"
+    recompose "^0.28.0"
+
 "@storybook/addon-actions@3.4.10", "@storybook/addon-actions@^3.4.10":
   version "3.4.10"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-3.4.10.tgz#b90ca8ccbad925dcbb4af02d2d24cc2c60bcec3f"
