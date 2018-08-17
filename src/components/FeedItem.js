@@ -18,7 +18,9 @@ import React from "react";
 
 const styles = theme => ({
   card: {
-    maxWidth: 400
+    maxWidth: 400,
+    marginTop: 10,
+    marginBottom: 10
   },
   media: {
     height: 0,
@@ -53,14 +55,14 @@ class RecipeReviewCard extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, title } = this.props;
 
     return (
       <div>
         <Card className={classes.card}>
           <CardHeader
             avatar={<Avatar className={classes.avatar}>R</Avatar>}
-            title="Shrimp and Chorizo Paella"
+            title={title}
             subheader="September 14, 2016"
           />
           <CardMedia

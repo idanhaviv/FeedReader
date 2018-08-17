@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 import axios from "axios";
+import FeedItem from "./components/FeedItem";
 
 const apiService = axios.create({
   baseURL: "http://localhost:8080/api/"
@@ -26,7 +27,7 @@ const apiService = axios.create({
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: "", searchTerm: "@idanhaviv" };
+    this.state = { data: [], searchTerm: "@linabeau" };
   }
 
   search(searchTerm) {
@@ -35,14 +36,10 @@ class App extends Component {
       .get(searchTerm)
       .then(res =>
         this.setState({
-          data: res.data.map(item => item.title[0])
+          data: res.data
         })
       )
       .catch(e => console.log("e: ", e));
-  }
-
-  componentDidMount() {
-    // this.search("@idanhaviv");
   }
 
   render() {
@@ -62,7 +59,7 @@ class App extends Component {
           value={this.state.name}
           onChange={e => this.setState({ searchTerm: e.target.value })}
           margin="normal"
-          defaultValue="@idanhaviv"
+          defaultValue="@linabeau"
           InputLabelProps={{ required: true }}
         />
         <Button
@@ -73,7 +70,9 @@ class App extends Component {
         >
           Primary
         </Button>
-        <p className="App-intro">{this.state.data}</p>
+        {this.state.data.map(item => (
+          <FeedItem title={item.title[0]} />
+        ))}
       </div>
     );
   }
