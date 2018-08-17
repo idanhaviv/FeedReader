@@ -24,7 +24,10 @@ storiesOf("Button", module)
     </Button>
   ));
 
-storiesOf("FeedItem", module).add("component", () => <FeedItem />);
+storiesOf("FeedItem", module).add("withoutProps", () => <FeedItem />);
+storiesOf("FeedItem", module).add("withProps", () => (
+  <FeedItem title="this is the title" />
+));
 storiesOf("CardMedia", module).add("component", () => (
   <CardMedia style={{ height: 300 }} image="download.jpeg" />
 ));
