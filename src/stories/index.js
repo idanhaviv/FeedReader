@@ -7,7 +7,6 @@ import { linkTo } from "@storybook/addon-links";
 import { Button, Welcome } from "@storybook/react/demo";
 import FeedItem from "../components/FeedItem";
 import { CardMedia } from "@material-ui/core";
-import imageFile from "./static/download.jpeg";
 
 storiesOf("Welcome", module).add("to Storybook", () => (
   <Welcome showApp={linkTo("Button")} />
@@ -27,9 +26,5 @@ storiesOf("Button", module)
 
 storiesOf("FeedItem", module).add("component", () => <FeedItem />);
 storiesOf("CardMedia", module).add("component", () => (
-  <CardMedia img={imageFile} />
-));
-
-storiesOf("<img />", module).add("with an image", () => (
-  <img src={imageFile} />
+  <CardMedia style={{ height: 300 }} image="download.jpeg" />
 ));
