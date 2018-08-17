@@ -26,7 +26,12 @@ storiesOf("Button", module)
 
 storiesOf("FeedItem", module).add("withoutProps", () => <FeedItem />);
 storiesOf("FeedItem", module).add("withProps", () => (
-  <FeedItem title="this is the title" />
+  <FeedItem
+    title="this is the title"
+    image="download.jpeg"
+    content="some content"
+    avatarSrc="avatar.jpeg"
+  />
 ));
 storiesOf("CardMedia", module).add("component", () => (
   <CardMedia style={{ height: 300 }} image="download.jpeg" />
