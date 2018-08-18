@@ -2,23 +2,24 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 import React from "react";
-import { compose, withState } from "recompose";
+import { compose, withState, withProps } from "recompose";
 import "./App.css";
 import FeedItem from "./components/FeedItem";
+import { logProp } from "./dev_utils/utils";
 
 const apiService = axios.create({
   baseURL: "http://localhost:8080/api/"
 });
 
-const search = (searchTerm, setFeedItems) => {
+const search = (searchTerm, setFeed) => {
   console.log("searchTerm: ", searchTerm);
   apiService
     .get(searchTerm)
-    .then(res => setFeedItems(res.data))
+    .then(res => setFeed(res.data))
     .catch(e => console.log("e: ", e));
 };
 const withSearchTerm = withState("searchTerm", "setSearchTerm", "@idanhaviv");
-const withFeedItems = withState("feedItems", "setFeedItems", []);
+const withFeed = withState("feed", "setFeed", []);
 const createMarkup = htmlTexxt => {
   return { __html: htmlTexxt };
 };
@@ -34,7 +35,15 @@ const extractPreviewImageSrc = (htmlText, defaultImageSrc) => {
   return imageSrc;
 };
 
-const App = ({ searchTerm, setSearchTerm, feedItems, setFeedItems }) => (
+const withAvatar = withProps(({ feed }) => {
+  const avatar =
+    feed.avatar && feed.avatar.length > 0
+      ? feed.avatar[0].url
+      : "./avatar.jpeg";
+  return { avatar };
+});
+
+const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
   <div
     className="App"
     style={{
@@ -56,31 +65,35 @@ const App = ({ searchTerm, setSearchTerm, feedItems, setFeedItems }) => (
       variant="contained"
       color="primary"
       className={"classes.button"}
-      onClick={() => search(searchTerm, setFeedItems)}
+      onClick={() => search(searchTerm, setFeed)}
     >
       Get Feed
     </Button>
-    {feedItems.map((item, index) => (
-      // <div
-      //   key={index}
-      //   dangerouslySetInnerHTML={createMarkup(item["content:encoded"])}
-      // />
-      <FeedItem
-        key={index}
-        title={item.title[0]}
-        content="some content"
-        avatarSrc="./avatar.jpeg"
-        image={extractPreviewImageSrc(
-          item["content:encoded"],
-          "./download.jpeg"
-        )}
-      />
-    ))}
+    {feed &&
+      feed.feedItems &&
+      feed.feedItems.map((item, index) => (
+        // <div
+        //   key={index}
+        //   dangerouslySetInnerHTML={createMarkup(item["content:encoded"])}
+        // />
+        <FeedItem
+          key={index}
+          title={item.title[0]}
+          content="some content"
+          avatarSrc={avatar}
+          image={extractPreviewImageSrc(
+            item["content:encoded"],
+            "./download.jpeg"
+          )}
+        />
+      ))}
   </div>
 );
 
 const enhanced = compose(
   withSearchTerm,
-  withFeedItems
+  withFeed,
+  withAvatar,
+  logProp("avatar")
 );
 export default enhanced(App);
