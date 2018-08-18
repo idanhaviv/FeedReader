@@ -3,7 +3,8 @@ import React from "react";
 import {
   extractPreviewImageSrc,
   getPublishDate,
-  extractContents
+  extractContents,
+  extractPreviewText
 } from "../htmlUtils/parser";
 
 export default ({ feed, avatar }) =>
@@ -13,6 +14,7 @@ export default ({ feed, avatar }) =>
           key={index}
           title={item.title[0]}
           content={extractContents(item["content:encoded"])}
+          preview={extractPreviewText(item["content:encoded"])}
           avatarSrc={avatar}
           image={extractPreviewImageSrc(
             item["content:encoded"],

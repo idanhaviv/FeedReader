@@ -57,6 +57,7 @@ const FeedItem = ({
   avatarSrc,
   title,
   image,
+  preview,
   content,
   subHeader,
   expanded,
@@ -81,7 +82,7 @@ const FeedItem = ({
         title="Contemplative Reptile"
       />
       <CardContent>
-        <Typography component="div">{content}</Typography>
+        <Typography component="div">{expanded ? content : preview}</Typography>
       </CardContent>
       <CardActions className={classes.actions} disableActionSpacing>
         <IconButton>
