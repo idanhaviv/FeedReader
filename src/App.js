@@ -26,7 +26,7 @@ const createMarkup = htmlTexxt => {
 
 const extractPreviewImageSrc = (htmlText, defaultImageSrc) => {
   const parser = new DOMParser();
-  const dom = parser.parseFromString(htmlText, "text/xml");
+  const dom = parser.parseFromString(htmlText, "text/html");
   const images = dom.getElementsByTagName("img");
   const imageSrc =
     images && images.length > 0
@@ -42,6 +42,16 @@ const withAvatar = withProps(({ feed }) => {
       : "./avatar.jpeg";
   return { avatar };
 });
+
+const extractPreviewText = htmlText => {
+  const parser = new DOMParser();
+  const dom = parser.parseFromString(htmlText, "text/html");
+  const paragraphs = dom.getElementsByTagName("p");
+  const firstParagraph =
+    paragraphs && paragraphs.length > 0 ? paragraphs[0] : "";
+  const text = firstParagraph.textContent;
+  return text;
+};
 
 const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
   <div
@@ -78,8 +88,8 @@ const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
         // />
         <FeedItem
           key={index}
-          // title={item.title[0]}
-          content={item.title[0]}
+          title={item.title[0]}
+          content={extractPreviewText(item["content:encoded"])}
           avatarSrc={avatar}
           image={extractPreviewImageSrc(
             item["content:encoded"],
@@ -93,7 +103,7 @@ const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
 const enhanced = compose(
   withSearchTerm,
   withFeed,
-  withAvatar,
-  logProp("avatar")
+  withAvatar
+  // logProp("feed")
 );
 export default enhanced(App);

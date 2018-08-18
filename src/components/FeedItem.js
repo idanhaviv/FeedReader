@@ -43,9 +43,8 @@ const FeedItem = ({ classes, avatarSrc, title, image, content }) => (
             imgProps={{ objectfit: "scale-down" }}
           />
         }
-        // title={title}
-        title="September 14, 2016"
-        // subheader="September 14, 2016"
+        title={title}
+        subheader="September 14, 2016"
       />
       <CardMedia
         className={classes.media}
