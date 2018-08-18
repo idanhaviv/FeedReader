@@ -72,18 +72,13 @@ const fixImagesStyling = components => {
         if (child.type !== "img") {
           return child;
         }
-        // return React.cloneElement(child, { newProp: "idan" });
         const styledImageChildComponent = React.cloneElement(child, {
-          style: { "max-height": "100%", "max-width": "100%" }
+          style: { maxHeight: "100%", maxWidth: "100%" }
         });
-        // const styledImageChildComponent = props => (
-        //   <child style={{ maxHeight: "100%", maxWidth: "100%" }} {...props} />
-        // );
-        console.log("styledImageChildComponent: ", styledImageChildComponent);
         return styledImageChildComponent;
       }
     );
-    return <element {...component.props}> {styledChildComponents}</element>;
+    return <component {...component.props}> {styledChildComponents}</component>;
   });
   return styledComponents;
 };
@@ -93,9 +88,8 @@ const extractContents = htmlText => {
 
   const withoutFirstFigureElement =
     reactElements[0].type === "figure" ? reactElements.slice(1) : reactElements;
-  const temp = fixImagesStyling(withoutFirstFigureElement);
-  console.log("temp: ", temp);
-  return withoutFirstFigureElement;
+  const styledComponents = fixImagesStyling(withoutFirstFigureElement);
+  return styledComponents;
 };
 
 const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
