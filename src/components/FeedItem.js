@@ -4,6 +4,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import red from "@material-ui/core/colors/red";
 import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
@@ -11,6 +12,8 @@ import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PropTypes from "prop-types";
 import React from "react";
+import classnames from "classnames";
+import { withState } from "recompose";
 
 const styles = theme => ({
   card: {
@@ -27,12 +30,38 @@ const styles = theme => ({
   actions: {
     display: "flex"
   },
+  expand: {
+    transform: "rotate(0deg)",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest
+    }),
+    marginLeft: "auto",
+    [theme.breakpoints.up("sm")]: {
+      marginRight: -8
+    }
+  },
+  expandOpen: {
+    transform: "rotate(180deg)"
+  },
   avatar: {
     backgroundColor: red[500]
   }
 });
 
-const FeedItem = ({ classes, avatarSrc, title, image, content, subHeader }) => (
+const handleExpandClick = (expanded, setExpanded) => {
+  setExpanded(!expanded);
+};
+
+const FeedItem = ({
+  classes,
+  avatarSrc,
+  title,
+  image,
+  content,
+  subHeader,
+  expanded,
+  setExpanded
+}) => (
   <div>
     <Card className={classes.card}>
       <CardHeader
@@ -58,6 +87,14 @@ const FeedItem = ({ classes, avatarSrc, title, image, content, subHeader }) => (
         <IconButton>
           <FavoriteIcon />
         </IconButton>
+        <IconButton
+          className={classnames(classes.expand, {
+            [classes.expandOpen]: expanded
+          })}
+          onClick={() => handleExpandClick(expanded, setExpanded)}
+        >
+          <ExpandMoreIcon />
+        </IconButton>
       </CardActions>
     </Card>
   </div>
@@ -67,4 +104,6 @@ FeedItem.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(FeedItem);
+const withExpanded = withState("expanded", "setExpanded", false);
+
+export default withExpanded(withStyles(styles)(FeedItem));
