@@ -46,14 +46,13 @@ const App = ({ searchTerm, setSearchTerm, feedItems, setFeedItems }) => (
     >
       Get Feed
     </Button>
-    <img src="download.jpeg" />
     {feedItems.map((item, index) => (
       <FeedItem
         key={index}
         title={item.title[0]}
         content="some content"
-        avatarSrc="../static/avatar.jpeg"
-        image="../static/download.jpeg"
+        avatarSrc="./avatar.jpeg"
+        image="./download.jpeg"
       />
     ))}
   </div>
