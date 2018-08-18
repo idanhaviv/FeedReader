@@ -1,22 +1,12 @@
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import axios from "axios";
 import React from "react";
 import ReactHtmlParser from "react-html-parser";
 import { compose, withProps, withState } from "recompose";
 import "./App.css";
 import FeedItem from "./components/FeedItem";
+import { getFeed } from "./api/feedApi";
 
-const apiService = axios.create({
-  baseURL: "http://localhost:8080/api/"
-});
-
-const search = (searchTerm, setFeed) => {
-  apiService
-    .get(searchTerm)
-    .then(res => setFeed(res.data))
-    .catch(e => console.log("e: ", e));
-};
 const withSearchTerm = withState("searchTerm", "setSearchTerm", "@idanhaviv");
 const withFeed = withState("feed", "setFeed", []);
 
@@ -110,7 +100,7 @@ const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
       variant="contained"
       color="primary"
       className={"classes.button"}
-      onClick={() => search(searchTerm, setFeed)}
+      onClick={() => getFeed(searchTerm, setFeed)}
     >
       Get Feed
     </Button>
