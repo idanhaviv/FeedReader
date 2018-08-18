@@ -38,7 +38,7 @@ const extractPreviewImageSrc = (htmlText, defaultImageSrc) => {
 const withAvatar = withProps(({ feed }) => {
   const avatar =
     feed.avatar && feed.avatar.length > 0
-      ? feed.avatar[0].url
+      ? feed.avatar[0].url[0]
       : "./avatar.jpeg";
   return { avatar };
 });
@@ -78,8 +78,8 @@ const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
         // />
         <FeedItem
           key={index}
-          title={item.title[0]}
-          content="some content"
+          // title={item.title[0]}
+          content={item.title[0]}
           avatarSrc={avatar}
           image={extractPreviewImageSrc(
             item["content:encoded"],

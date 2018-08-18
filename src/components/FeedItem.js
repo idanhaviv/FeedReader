@@ -32,7 +32,7 @@ const styles = theme => ({
   }
 });
 
-const RecipeReviewCard = ({ classes, avatarSrc, title, image, content }) => (
+const FeedItem = ({ classes, avatarSrc, title, image, content }) => (
   <div>
     <Card className={classes.card}>
       <CardHeader
@@ -40,11 +40,12 @@ const RecipeReviewCard = ({ classes, avatarSrc, title, image, content }) => (
           <Avatar
             className={classes.avatar}
             src={avatarSrc}
-            imgProps={{ objectFit: "scale-down" }}
+            imgProps={{ objectfit: "scale-down" }}
           />
         }
-        title={title}
-        subheader="September 14, 2016"
+        // title={title}
+        title="September 14, 2016"
+        // subheader="September 14, 2016"
       />
       <CardMedia
         className={classes.media}
@@ -63,8 +64,8 @@ const RecipeReviewCard = ({ classes, avatarSrc, title, image, content }) => (
   </div>
 );
 
-RecipeReviewCard.propTypes = {
+FeedItem.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(RecipeReviewCard);
+export default withStyles(styles)(FeedItem);
