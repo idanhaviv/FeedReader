@@ -3,13 +3,8 @@ import TextField from "@material-ui/core/TextField";
 import React from "react";
 import { compose, withProps, withState } from "recompose";
 import "./App.css";
-import FeedItem from "./components/FeedItem";
 import { getFeed } from "./api/feedApi";
-import {
-  extractPreviewImageSrc,
-  getPublishDate,
-  extractContents
-} from "./htmlUtils/parser";
+import Feed from "./components/Feed";
 
 const withSearchTerm = withState("searchTerm", "setSearchTerm", "@idanhaviv");
 const withFeed = withState("feed", "setFeed", []);
@@ -48,21 +43,7 @@ const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
     >
       Get Feed
     </Button>
-    {feed &&
-      feed.feedItems &&
-      feed.feedItems.map((item, index) => (
-        <FeedItem
-          key={index}
-          title={item.title[0]}
-          content={extractContents(item["content:encoded"])}
-          avatarSrc={avatar}
-          image={extractPreviewImageSrc(
-            item["content:encoded"],
-            "./download.jpeg"
-          )}
-          subHeader={getPublishDate(item)}
-        />
-      ))}
+    <Feed feed={feed} avatar={avatar} />
   </div>
 );
 
