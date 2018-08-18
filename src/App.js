@@ -2,10 +2,10 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 import React from "react";
-import { compose, withState, withProps } from "recompose";
+import ReactHtmlParser from "react-html-parser";
+import { compose, withProps, withState } from "recompose";
 import "./App.css";
 import FeedItem from "./components/FeedItem";
-import { logProp } from "./dev_utils/utils";
 
 const apiService = axios.create({
   baseURL: "http://localhost:8080/api/"
@@ -46,7 +46,6 @@ const withAvatar = withProps(({ feed }) => {
 const extractPreviewText = htmlText => {
   const parser = new DOMParser();
   const dom = parser.parseFromString(htmlText, "text/html");
-  // console.log("dom: ", dom);
   const paragraphs = dom.getElementsByTagName("p");
   const firstParagraph =
     paragraphs && paragraphs.length > 0 ? paragraphs[0] : "";
@@ -55,12 +54,44 @@ const extractPreviewText = htmlText => {
 };
 
 const getPublishDate = htmlText => {
-  console.log("htmlText: ", htmlText);
   const dateString = htmlText["pubDate"];
   const date = new Date(dateString);
   const formattedDate = date.toDateString();
-  console.log("formattedDate: ", formattedDate);
   return formattedDate;
+};
+
+const fixImagesStyling = components => {
+  const styledComponents = components.map(element => {
+    if (element.type !== "figure") {
+      return element;
+    }
+
+    const styledChildElements = React.Children.map(
+      element.props.children,
+      child => {
+        if (child.type !== "img") {
+          return child;
+        }
+        // return React.cloneElement(child, { newProp: "idan" });
+        const styledImageChildComponent = props => (
+          <child style={{ maxHeight: "100%", maxWidth: "100%" }} {...props} />
+        );
+        console.log("styledImageChildComponent: ", styledImageChildComponent);
+        return styledImageChildComponent;
+      }
+    );
+    return () => <element> {styledChildElements}</element>;
+  });
+  return styledComponents;
+};
+
+const extractContents = htmlText => {
+  const reactElements = ReactHtmlParser(htmlText);
+
+  const withoutFirstFigureElement =
+    reactElements[0].type === "figure" ? reactElements.slice(1) : reactElements;
+
+  return withoutFirstFigureElement;
 };
 
 const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
@@ -99,7 +130,7 @@ const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
         <FeedItem
           key={index}
           title={item.title[0]}
-          content={extractPreviewText(item["content:encoded"])}
+          content={extractContents(item["content:encoded"])}
           avatarSrc={avatar}
           image={extractPreviewImageSrc(
             item["content:encoded"],

@@ -81,7 +81,7 @@ const FeedItem = ({
         title="Contemplative Reptile"
       />
       <CardContent>
-        <Typography component="p">{content}</Typography>
+        <Typography component="div">{content}</Typography>
       </CardContent>
       <CardActions className={classes.actions} disableActionSpacing>
         <IconButton>
