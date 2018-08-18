@@ -12,7 +12,6 @@ const apiService = axios.create({
 });
 
 const search = (searchTerm, setFeed) => {
-  console.log("searchTerm: ", searchTerm);
   apiService
     .get(searchTerm)
     .then(res => setFeed(res.data))
@@ -20,9 +19,6 @@ const search = (searchTerm, setFeed) => {
 };
 const withSearchTerm = withState("searchTerm", "setSearchTerm", "@idanhaviv");
 const withFeed = withState("feed", "setFeed", []);
-const createMarkup = htmlTexxt => {
-  return { __html: htmlTexxt };
-};
 
 const extractPreviewImageSrc = (htmlText, defaultImageSrc) => {
   const parser = new DOMParser();
