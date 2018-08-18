@@ -17,8 +17,22 @@ const search = (searchTerm, setFeedItems) => {
     .then(res => setFeedItems(res.data))
     .catch(e => console.log("e: ", e));
 };
-const withSearchTerm = withState("searchTerm", "setSearchTerm", "@linabeau");
+const withSearchTerm = withState("searchTerm", "setSearchTerm", "@idanhaviv");
 const withFeedItems = withState("feedItems", "setFeedItems", []);
+const createMarkup = htmlTexxt => {
+  return { __html: htmlTexxt };
+};
+
+const extractPreviewImageSrc = (htmlText, defaultImageSrc) => {
+  const parser = new DOMParser();
+  const dom = parser.parseFromString(htmlText, "text/xml");
+  const images = dom.getElementsByTagName("img");
+  const imageSrc =
+    images && images.length > 0
+      ? images[0].getAttribute("src")
+      : defaultImageSrc;
+  return imageSrc;
+};
 
 const App = ({ searchTerm, setSearchTerm, feedItems, setFeedItems }) => (
   <div
@@ -47,12 +61,19 @@ const App = ({ searchTerm, setSearchTerm, feedItems, setFeedItems }) => (
       Get Feed
     </Button>
     {feedItems.map((item, index) => (
+      // <div
+      //   key={index}
+      //   dangerouslySetInnerHTML={createMarkup(item["content:encoded"])}
+      // />
       <FeedItem
         key={index}
         title={item.title[0]}
         content="some content"
         avatarSrc="./avatar.jpeg"
-        image="./download.jpeg"
+        image={extractPreviewImageSrc(
+          item["content:encoded"],
+          "./download.jpeg"
+        )}
       />
     ))}
   </div>
