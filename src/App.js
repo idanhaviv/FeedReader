@@ -1,81 +1,66 @@
-import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-
+import TextField from "@material-ui/core/TextField";
 import axios from "axios";
+import React from "react";
+import { compose, withState } from "recompose";
+import "./App.css";
 import FeedItem from "./components/FeedItem";
 
 const apiService = axios.create({
   baseURL: "http://localhost:8080/api/"
 });
 
-// apiService
-//   .get()
-//   .then(res => console.log("res: ", res.data))
-//   .catch(e => console.log("e: ", e));
+const search = (searchTerm, setFeedItems) => {
+  console.log("searchTerm: ", searchTerm);
+  apiService
+    .get(searchTerm)
+    .then(res => setFeedItems(res.data))
+    .catch(e => console.log("e: ", e));
+};
+const withSearchTerm = withState("searchTerm", "setSearchTerm", "@linabeau");
+const withFeedItems = withState("feedItems", "setFeedItems", []);
 
-// const getFeed = async path => {
-//   const res = await apiService.get();
-//   if (!res || !res.data) {
-//     throw new Error("unexpected result for fetch question");
-//   }
-//   return res.data;
-// };
+const App = ({ searchTerm, setSearchTerm, feedItems, setFeedItems }) => (
+  <div
+    className="App"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center"
+    }}
+  >
+    <TextField
+      id="name"
+      label="Feed Name"
+      className={"abc"}
+      value={searchTerm}
+      onChange={e => setSearchTerm(e.target.value)}
+      margin="normal"
+      InputLabelProps={{ required: true }}
+    />
+    <Button
+      variant="contained"
+      color="primary"
+      className={"classes.button"}
+      onClick={() => search(searchTerm, setFeedItems)}
+    >
+      Get Feed
+    </Button>
+    <img src="download.jpeg" />
+    {feedItems.map((item, index) => (
+      <FeedItem
+        key={index}
+        title={item.title[0]}
+        content="some content"
+        avatarSrc="../static/avatar.jpeg"
+        image="../static/download.jpeg"
+      />
+    ))}
+  </div>
+);
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { data: [], searchTerm: "@linabeau" };
-  }
-
-  search(searchTerm) {
-    console.log("searchTerm: ", searchTerm);
-    apiService
-      .get(searchTerm)
-      .then(res =>
-        this.setState({
-          data: res.data
-        })
-      )
-      .catch(e => console.log("e: ", e));
-  }
-
-  render() {
-    return (
-      <div
-        className="App"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center"
-        }}
-      >
-        <TextField
-          id="name"
-          label="Feed Name"
-          className={"abc"}
-          value={this.state.name}
-          onChange={e => this.setState({ searchTerm: e.target.value })}
-          margin="normal"
-          defaultValue="@linabeau"
-          InputLabelProps={{ required: true }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          className={"classes.button"}
-          onClick={() => this.search(this.state.searchTerm)}
-        >
-          Primary
-        </Button>
-        {this.state.data.map(item => (
-          <FeedItem title={item.title[0]} />
-        ))}
-      </div>
-    );
-  }
-}
-
-export default App;
+const enhanced = compose(
+  withSearchTerm,
+  withFeedItems
+);
+export default enhanced(App);

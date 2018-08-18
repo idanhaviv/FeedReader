@@ -39,7 +39,7 @@ const RecipeReviewCard = ({ classes, avatarSrc, title, image, content }) => (
         avatar={
           <Avatar
             className={classes.avatar}
-            src={avatarSrc}
+            src={"./avatar.jpeg"}
             imgProps={{ objectFit: "scale-down" }}
           />
         }
@@ -48,7 +48,7 @@ const RecipeReviewCard = ({ classes, avatarSrc, title, image, content }) => (
       />
       <CardMedia
         className={classes.media}
-        image={image}
+        image={"./download.jpeg"}
         title="Contemplative Reptile"
       />
       <CardContent>
