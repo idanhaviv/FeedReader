@@ -61,26 +61,29 @@ const getPublishDate = htmlText => {
 };
 
 const fixImagesStyling = components => {
-  const styledComponents = components.map(element => {
-    if (element.type !== "figure") {
-      return element;
+  const styledComponents = components.map(component => {
+    if (component.type !== "figure") {
+      return component;
     }
 
-    const styledChildElements = React.Children.map(
-      element.props.children,
+    const styledChildComponents = React.Children.map(
+      component.props.children,
       child => {
         if (child.type !== "img") {
           return child;
         }
         // return React.cloneElement(child, { newProp: "idan" });
-        const styledImageChildComponent = props => (
-          <child style={{ maxHeight: "100%", maxWidth: "100%" }} {...props} />
-        );
+        const styledImageChildComponent = React.cloneElement(child, {
+          style: { "max-height": "100%", "max-width": "100%" }
+        });
+        // const styledImageChildComponent = props => (
+        //   <child style={{ maxHeight: "100%", maxWidth: "100%" }} {...props} />
+        // );
         console.log("styledImageChildComponent: ", styledImageChildComponent);
         return styledImageChildComponent;
       }
     );
-    return () => <element> {styledChildElements}</element>;
+    return <element {...component.props}> {styledChildComponents}</element>;
   });
   return styledComponents;
 };
@@ -90,7 +93,8 @@ const extractContents = htmlText => {
 
   const withoutFirstFigureElement =
     reactElements[0].type === "figure" ? reactElements.slice(1) : reactElements;
-
+  const temp = fixImagesStyling(withoutFirstFigureElement);
+  console.log("temp: ", temp);
   return withoutFirstFigureElement;
 };
 
