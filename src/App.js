@@ -46,11 +46,21 @@ const withAvatar = withProps(({ feed }) => {
 const extractPreviewText = htmlText => {
   const parser = new DOMParser();
   const dom = parser.parseFromString(htmlText, "text/html");
+  // console.log("dom: ", dom);
   const paragraphs = dom.getElementsByTagName("p");
   const firstParagraph =
     paragraphs && paragraphs.length > 0 ? paragraphs[0] : "";
   const text = firstParagraph.textContent;
   return text;
+};
+
+const getPublishDate = htmlText => {
+  console.log("htmlText: ", htmlText);
+  const dateString = htmlText["pubDate"];
+  const date = new Date(dateString);
+  const formattedDate = date.toDateString();
+  console.log("formattedDate: ", formattedDate);
+  return formattedDate;
 };
 
 const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
@@ -95,6 +105,7 @@ const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
             item["content:encoded"],
             "./download.jpeg"
           )}
+          subHeader={getPublishDate(item)}
         />
       ))}
   </div>

@@ -32,7 +32,7 @@ const styles = theme => ({
   }
 });
 
-const FeedItem = ({ classes, avatarSrc, title, image, content }) => (
+const FeedItem = ({ classes, avatarSrc, title, image, content, subHeader }) => (
   <div>
     <Card className={classes.card}>
       <CardHeader
@@ -44,7 +44,7 @@ const FeedItem = ({ classes, avatarSrc, title, image, content }) => (
           />
         }
         title={title}
-        subheader="September 14, 2016"
+        subheader={subHeader}
       />
       <CardMedia
         className={classes.media}
