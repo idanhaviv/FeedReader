@@ -4,11 +4,13 @@ const apiService = axios.create({
   baseURL: "http://localhost:8080/api/"
 });
 
-const getFeed = (searchTerm, setFeed) => {
-  apiService
-    .get(searchTerm)
-    .then(res => setFeed(res.data))
-    .catch(e => console.log("e: ", e));
+const getFeed = async searchTerm => {
+  try {
+    const res = await apiService.get(searchTerm);
+    return res.data;
+  } catch (error) {
+    console.log("error: ", error);
+  }
 };
 
 export { getFeed };

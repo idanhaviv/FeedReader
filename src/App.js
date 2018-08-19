@@ -7,27 +7,30 @@ import { getFeed } from "./api/feedApi";
 import Feed from "./components/Feed";
 import { Provider, connect } from "react-redux";
 import store from "./store/store";
-import { setSearchInput } from "./store/actions/feedActions";
+import {
+  setSearchInput,
+  requestFeed,
+  receiveFeed
+} from "./store/actions/feedActions";
 
 const mapStateToProps = state => {
-  return { searchInput: state.searchInput };
+  return { searchInput: state.searchInput, feed: state.currentFeed };
 };
 
 const mapDispatchToProps = {
-  setSearchInput
+  setSearchInput,
+  requestFeed
 };
-
-const withFeed = withState("feed", "setFeed", []);
 
 const withAvatar = withProps(({ feed }) => {
   const avatar =
-    feed.avatar && feed.avatar.length > 0
+    feed && feed.avatar && feed.avatar.length > 0
       ? feed.avatar[0].url[0]
       : "./avatar.jpeg";
   return { avatar };
 });
 
-const App = ({ searchInput, setSearchInput, feed, setFeed, avatar }) => (
+const App = ({ searchInput, setSearchInput, feed, avatar, requestFeed }) => (
   <div
     className="App"
     style={{
@@ -49,7 +52,7 @@ const App = ({ searchInput, setSearchInput, feed, setFeed, avatar }) => (
       variant="contained"
       color="primary"
       className={"classes.button"}
-      onClick={() => getFeed(searchInput, setFeed)}
+      onClick={() => requestFeed(searchInput)}
     >
       Get Feed
     </Button>
@@ -62,7 +65,6 @@ const enhanced = compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withFeed,
   withAvatar
   // logProp("feed")
 );
