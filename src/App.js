@@ -71,7 +71,7 @@ const App = ({
     }}
   >
     <UpdateFeedComponent
-      shouldUpdate={!currentFeedIsUpdated}
+      shouldUpdate={currentFeedIsUpdated === false}
       updateFeedAction={updateCurrentFeed}
     />
     <TextField
@@ -113,7 +113,7 @@ const enhanced = compose(
   ),
   withAvatar,
   withLoader,
-  withErrorPresenter
-  // logProp("feed")
+  withErrorPresenter,
+  logProp("currentFeedIsUpdated")
 );
 export default enhanced(App);
