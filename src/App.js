@@ -17,7 +17,6 @@ const mapDispatchToProps = {
   setSearchInput
 };
 
-const withSearchTerm = withState("searchTerm", "setSearchTerm", "@idanhaviv");
 const withFeed = withState("feed", "setFeed", []);
 
 const withAvatar = withProps(({ feed }) => {
@@ -58,18 +57,11 @@ const App = ({ searchInput, setSearchInput, feed, setFeed, avatar }) => (
   </div>
 );
 
-const ConnectedApp = (
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
-
 const enhanced = compose(
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withSearchTerm,
   withFeed,
   withAvatar
   // logProp("feed")

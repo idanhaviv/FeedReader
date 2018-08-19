@@ -2,7 +2,7 @@ import { SET_SEARCH_INPUT } from "../actions/feedActions";
 
 export default (
   state = {
-    searchInput: "",
+    searchInput: "@idanhaviv",
     isLoading: false
   },
   action
