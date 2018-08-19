@@ -21,15 +21,10 @@ export const receiveFeedFailure = error => ({
 });
 
 export const requestFeed = feedName => {
-  console.log("feedName: ", feedName);
-
   return async dispatch => {
-    console.log("dispatch: ", dispatch);
-
     dispatch(requestingFeed(feedName));
     try {
       const feed = await getFeed(feedName);
-      console.log("feed: ", feed);
       dispatch(receiveFeedSuccess(feed));
     } catch (error) {
       dispatch(receiveFeedFailure(error.message));

@@ -1,20 +1,20 @@
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import React from "react";
-import { compose, withProps, withState } from "recompose";
+import { connect } from "react-redux";
+import { compose, withProps } from "recompose";
 import "./App.css";
-import { getFeed } from "./api/feedApi";
 import Feed from "./components/Feed";
-import { Provider, connect } from "react-redux";
-import store from "./store/store";
-import {
-  setSearchInput,
-  requestFeed,
-  receiveFeed
-} from "./store/actions/feedActions";
+import { requestFeed, setSearchInput } from "./store/actions/feedActions";
+import withLoader from "./components/withLoader";
 
 const mapStateToProps = state => {
-  return { searchInput: state.searchInput, feed: state.currentFeed };
+  return {
+    searchInput: state.searchInput,
+    feed: state.currentFeed,
+    feedRequestErrorMessage: state.feedRequestErrorMessage,
+    isLoading: state.isLoading
+  };
 };
 
 const mapDispatchToProps = {
@@ -30,7 +30,15 @@ const withAvatar = withProps(({ feed }) => {
   return { avatar };
 });
 
-const App = ({ searchInput, setSearchInput, feed, avatar, requestFeed }) => (
+const App = ({
+  searchInput,
+  setSearchInput,
+  feed,
+  avatar,
+  requestFeed,
+  isLoading,
+  feedRequestErrorMessage
+}) => (
   <div
     className="App"
     style={{
@@ -60,6 +68,7 @@ const App = ({ searchInput, setSearchInput, feed, avatar, requestFeed }) => (
   </div>
 );
 
+const LoadableApp = withLoader(App);
 const enhanced = compose(
   connect(
     mapStateToProps,
@@ -68,4 +77,4 @@ const enhanced = compose(
   withAvatar
   // logProp("feed")
 );
-export default enhanced(App);
+export default enhanced(LoadableApp);
