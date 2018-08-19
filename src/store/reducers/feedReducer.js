@@ -9,7 +9,8 @@ export default (
   state = {
     searchInput: "",
     feed: [],
-    isLoading: false
+    isLoading: false,
+    feedRequestErrorMessage: ""
   },
   action
 ) => {
