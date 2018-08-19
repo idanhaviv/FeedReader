@@ -14,12 +14,6 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 
-// store.subscribe(
-//   throttle(() => {
-//     saveState(store.getState());
-//   }, 1000)
-// );
-
 store.subscribe(
   throttle(() => {
     const state = store.getState();

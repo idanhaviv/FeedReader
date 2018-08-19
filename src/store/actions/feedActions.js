@@ -43,7 +43,6 @@ export const requestFeed = feedName => {
       if (!feed) throw new Error("Failed to get feed from server");
       dispatch(receiveFeedSuccess(feed, feedName));
     } catch (error) {
-      console.log("error1: ", error);
       dispatch(receiveFeedFailure(error.message));
     }
   };

@@ -47,10 +47,6 @@ export default (
         isLoading: false
       };
     case RECEIVE_FEED_SUCCESS:
-      console.log(
-        "state.currentFeedName === state.requestedFeedName: ",
-        state.currentFeedName === action.feedName
-      );
       const newState = { ...state };
       newState[action.feedName] = action.feed;
       if (state.currentFeedName === action.feedName) {
@@ -62,7 +58,6 @@ export default (
           updatedFeed: action.feed
         };
       }
-      console.log("action.feed: ", action.feed);
       return {
         ...newState,
         feed: action.feed,
