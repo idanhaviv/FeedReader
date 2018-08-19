@@ -16,8 +16,11 @@ import classnames from "classnames";
 import { withState } from "recompose";
 
 const styles = theme => ({
+  container: {
+    maxWidth: "80%"
+  },
   card: {
-    maxWidth: 400,
+    maxWidth: 700,
     marginTop: 10,
     marginBottom: 10
   },
@@ -63,7 +66,7 @@ const FeedItem = ({
   expanded,
   setExpanded
 }) => (
-  <div>
+  <div className={classes.container}>
     <Card className={classes.card}>
       <CardHeader
         avatar={
