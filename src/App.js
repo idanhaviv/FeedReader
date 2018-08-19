@@ -5,6 +5,17 @@ import { compose, withProps, withState } from "recompose";
 import "./App.css";
 import { getFeed } from "./api/feedApi";
 import Feed from "./components/Feed";
+import { Provider, connect } from "react-redux";
+import store from "./store/store";
+import { setSearchInput } from "./store/actions/feedActions";
+
+const mapStateToProps = state => {
+  return { searchInput: state.searchInput };
+};
+
+const mapDispatchToProps = {
+  setSearchInput
+};
 
 const withSearchTerm = withState("searchTerm", "setSearchTerm", "@idanhaviv");
 const withFeed = withState("feed", "setFeed", []);
@@ -17,7 +28,7 @@ const withAvatar = withProps(({ feed }) => {
   return { avatar };
 });
 
-const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
+const App = ({ searchInput, setSearchInput, feed, setFeed, avatar }) => (
   <div
     className="App"
     style={{
@@ -30,8 +41,8 @@ const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
       id="name"
       label="Feed Name"
       className={"abc"}
-      value={searchTerm}
-      onChange={e => setSearchTerm(e.target.value)}
+      value={searchInput}
+      onChange={e => setSearchInput(e.target.value)}
       margin="normal"
       InputLabelProps={{ required: true }}
     />
@@ -39,7 +50,7 @@ const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
       variant="contained"
       color="primary"
       className={"classes.button"}
-      onClick={() => getFeed(searchTerm, setFeed)}
+      onClick={() => getFeed(searchInput, setFeed)}
     >
       Get Feed
     </Button>
@@ -47,7 +58,17 @@ const App = ({ searchTerm, setSearchTerm, feed, setFeed, avatar }) => (
   </div>
 );
 
+const ConnectedApp = (
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+
 const enhanced = compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withSearchTerm,
   withFeed,
   withAvatar
