@@ -5,21 +5,29 @@ import { connect } from "react-redux";
 import { compose, withProps } from "recompose";
 import "./App.css";
 import Feed from "./components/Feed";
-import { requestFeed, setSearchInput } from "./store/actions/feedActions";
+import {
+  requestFeed,
+  setSearchInput,
+  updateCurrentFeed
+} from "./store/actions/feedActions";
 import withLoader from "./components/withLoader";
+import { logProp } from "./dev_utils/utils";
 
 const mapStateToProps = state => {
   return {
     searchInput: state.searchInput,
-    feed: state.currentFeed,
+    feed: state.feed,
     feedRequestErrorMessage: state.feedRequestErrorMessage,
-    isLoading: state.isLoading
+    isLoading: state.isLoading,
+    requestedFeedName: state.requestedFeedName,
+    currentFeedIsUpdated: state.currentFeedIsUpdated
   };
 };
 
 const mapDispatchToProps = {
   setSearchInput,
-  requestFeed
+  requestFeed,
+  updateCurrentFeed
 };
 
 const withAvatar = withProps(({ feed }) => {
@@ -30,14 +38,29 @@ const withAvatar = withProps(({ feed }) => {
   return { avatar };
 });
 
+const UpdateFeedComponent = ({ shouldUpdate, updateFeedAction }) => {
+  if (!shouldUpdate) return <div />;
+
+  return (
+    <Button
+      variant="contained"
+      color="primary"
+      className={"classes.button"}
+      onClick={updateFeedAction}
+    >
+      Update Feed
+    </Button>
+  );
+};
+
 const App = ({
   searchInput,
   setSearchInput,
   feed,
   avatar,
   requestFeed,
-  isLoading,
-  feedRequestErrorMessage
+  currentFeedIsUpdated,
+  updateCurrentFeed
 }) => (
   <div
     className="App"
@@ -47,6 +70,10 @@ const App = ({
       alignItems: "center"
     }}
   >
+    <UpdateFeedComponent
+      shouldUpdate={!currentFeedIsUpdated}
+      updateFeedAction={updateCurrentFeed}
+    />
     <TextField
       id="name"
       label="Feed Name"
@@ -68,13 +95,25 @@ const App = ({
   </div>
 );
 
-const LoadableApp = withLoader(App);
+const withErrorPresenter = Component => ({
+  feedRequestErrorMessage,
+  ...otherProps
+}) => (
+  <div>
+    {feedRequestErrorMessage && (
+      <div className="error-message">{feedRequestErrorMessage}</div>
+    )}
+    <Component {...otherProps} />
+  </div>
+);
 const enhanced = compose(
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
-  withAvatar
-  // logProp("feed")
+  withAvatar,
+  withLoader,
+  withErrorPresenter,
+  logProp("feed")
 );
-export default enhanced(LoadableApp);
+export default enhanced(App);

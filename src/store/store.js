@@ -14,9 +14,20 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 
+// store.subscribe(
+//   throttle(() => {
+//     saveState(store.getState());
+//   }, 1000)
+// );
+
 store.subscribe(
   throttle(() => {
-    saveState(store.getState());
+    const state = store.getState();
+    saveState({
+      searchInput: state.searchInput,
+      feed: state.feed,
+      currentFeedName: state.currentFeedName
+    });
   }, 1000)
 );
 
