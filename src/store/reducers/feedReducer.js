@@ -49,12 +49,14 @@ export default (
     case RECEIVE_FEED_SUCCESS:
       console.log(
         "state.currentFeedName === state.requestedFeedName: ",
-        state.currentFeedName === state.requestedFeedName
+        state.currentFeedName === action.feedName
       );
-      if (state.currentFeedName === state.requestedFeedName) {
+      const newState = { ...state };
+      newState[action.feedName] = action.feed;
+      if (state.currentFeedName === action.feedName) {
         // check if cached feed and returned feed are equal
         return {
-          ...state,
+          ...newState,
           isLoading: false,
           currentFeedIsUpdated: false,
           updatedFeed: action.feed
@@ -62,7 +64,7 @@ export default (
       }
       console.log("action.feed: ", action.feed);
       return {
-        ...state,
+        ...newState,
         feed: action.feed,
         currentFeedName: action.feedName,
         requestedFeedName: "",

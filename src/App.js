@@ -113,7 +113,7 @@ const enhanced = compose(
   ),
   withAvatar,
   withLoader,
-  withErrorPresenter,
-  logProp("feed")
+  withErrorPresenter
+  // logProp("feed")
 );
 export default enhanced(App);
