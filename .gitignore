@@ -20,3 +20,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 src/dev_utils/*
+
+src/server/dist
+src/server/logs
+src/server/npm-debug.log
+src/server/node_modules/*
+src/server/.DS_Store
