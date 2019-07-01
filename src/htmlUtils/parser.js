@@ -56,7 +56,7 @@ const extractContents = htmlText => {
   const reactElements = ReactHtmlParser(htmlText);
 
   const withoutFirstFigureElement =
-    reactElements[0].type === "figure" ? reactElements.slice(1) : reactElements;
+    reactElements[0] && reactElements[0].type === "figure" ? reactElements.slice(1) : reactElements;
   const styledComponents = fixImagesStyling(withoutFirstFigureElement);
   return styledComponents;
 };

@@ -11,7 +11,7 @@ import {
   updateCurrentFeed
 } from "./store/actions/feedActions";
 import withLoader from "./components/withLoader";
-import { logProp } from "./dev_utils/utils";
+// import { logProp } from "./dev_utils/utils";
 
 const mapStateToProps = state => {
   return {
@@ -114,6 +114,6 @@ const enhanced = compose(
   withAvatar,
   withLoader,
   withErrorPresenter,
-  logProp("currentFeedIsUpdated")
+  // logProp("currentFeedIsUpdated")
 );
 export default enhanced(App);
